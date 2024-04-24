@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:apps_gym/ui/favoritescreen.dart';
+import 'package:apps_gym/ui/notification.dart';
 
 void main() {
   runApp(const FloatingButtonDemo());
@@ -18,6 +20,26 @@ class FloatingButtonDemo extends StatelessWidget {
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
+
+  Future<void> _showAlertDialog(BuildContext context) async {
+    return showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Perhatian !!!'),
+          content: const Text('Klik OK untuk melanjutkan ?.'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('OK'),
+            ),
+          ],
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -95,7 +117,7 @@ class HomeScreen extends StatelessWidget {
                   onTap: () {
                     /// Close Navigation drawer before
                     Navigator.pop(context);
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => const FavouriteScreen()),);
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => const FavoriteScreen()),);
                   },
                 ),
                 ListTile(
@@ -117,13 +139,17 @@ class HomeScreen extends StatelessWidget {
                 ListTile(
                   leading: const Icon(Icons.notifications_outlined),
                   title: const Text('Notifications'),
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.pop(context);
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => const NotificationScreen()),);
+                  },
                 ),
               ],
             ),
           ],
         ),
       ),
+      body: ElevatedButtonExample(showAlertDialog: _showAlertDialog), // _showAlertDialog function
     );
   }
 }
@@ -144,6 +170,40 @@ class FavouriteScreen extends StatelessWidget {
       ),
       body: Center(
         child: const Text('Favourite Screen'),
+      ),
+    );
+  }
+}
+
+class ElevatedButtonExample extends StatefulWidget {
+  final Function(BuildContext) showAlertDialog; // Define a function parameter
+
+  const ElevatedButtonExample({Key? key, required this.showAlertDialog}) : super(key: key);
+
+  @override
+  _ElevatedButtonExampleState createState() => _ElevatedButtonExampleState();
+}
+
+class _ElevatedButtonExampleState extends State<ElevatedButtonExample> {
+  @override
+  Widget build(BuildContext context) {
+    final ButtonStyle style =
+        ElevatedButton.styleFrom(textStyle: const TextStyle(fontSize: 20));
+
+    return Center(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          ElevatedButton(
+            style: style,
+            onPressed: () {
+              // Call the function passed from the HomeScreen
+              widget.showAlertDialog(context);
+            },
+            child: const Text('Home Screen'),
+          ),
+          
+        ],
       ),
     );
   }

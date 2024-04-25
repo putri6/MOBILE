@@ -1,4 +1,4 @@
-# apps_gym
+# apps_putri
 
 A new Flutter project.
 

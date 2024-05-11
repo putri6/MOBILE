@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:apps_gym/ui/favoritescreen.dart';
 import 'package:apps_gym/ui/notification.dart';
+import 'package:apps_gym/ui/work_screen.dart';
+import 'package:apps_gym/ui/login_page.dart';
+import 'package:apps_gym/ui/add_story.dart';
+import 'package:apps_gym/ui/gesture.dart';
 
 void main() {
   runApp(const FloatingButtonDemo());
@@ -93,7 +97,7 @@ class HomeScreen extends StatelessWidget {
                 accountName: const Text('Putri Priyanti'),
                 accountEmail: const Text('putri@gmail.com'),
                 currentAccountPicture: const CircleAvatar(
-                  backgroundImage: AssetImage('assets/putri.png'),
+                  backgroundImage: AssetImage('assets/image.png'),
                 ),
                 decoration: BoxDecoration(
                   color: const Color.fromARGB(0, 234, 228, 228), // Transparent background to see the image
@@ -123,7 +127,10 @@ class HomeScreen extends StatelessWidget {
                 ListTile(
                   leading: const Icon(Icons.workspaces),
                   title: const Text('Workflow'),
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.pop(context);
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => const CardBasicRoute()),);
+                  },
                 ),
                 ListTile(
                   leading: const Icon(Icons.update),
@@ -144,12 +151,43 @@ class HomeScreen extends StatelessWidget {
                     Navigator.push(context, MaterialPageRoute(builder: (context) => const NotificationScreen()),);
                   },
                 ),
+                ListTile(
+                  leading: const Icon(Icons.notifications_outlined),
+                  title: const Text('Login'),
+                  onTap: () {
+                    Navigator.pop(context);
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => const SignupPage()),);
+                  },
+                ),
+                ListTile(
+                  leading: const Icon(Icons.notifications_outlined),
+                  title: const Text('Gesture'),
+                  onTap: () {
+                    Navigator.pop(context);
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => const Gesture_screen()),);
+                  },
+                ),
               ],
             ),
           ],
         ),
       ),
-      body: ElevatedButtonExample(showAlertDialog: _showAlertDialog), // _showAlertDialog function
+     body: InkWell(
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => Addstory()),
+          );
+        },
+        child: Center(
+          child: Image.asset(
+            'assets/bg.jpg',
+            width: 200,
+            height: 200,
+          ),
+        ),
+      ),
+
     );
   }
 }

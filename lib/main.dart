@@ -135,7 +135,10 @@ class HomeScreen extends StatelessWidget {
                 ListTile(
                   leading: const Icon(Icons.update),
                   title: const Text('Updates'),
-                  onTap: () {},
+                  onTap: () {
+                   Navigator.pop(context);
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => const GestureScreen()),);
+                  },
                 ),
                 const Divider(color: Colors.black45,),
                 ListTile(
@@ -152,19 +155,17 @@ class HomeScreen extends StatelessWidget {
                   },
                 ),
                 ListTile(
-                  leading: const Icon(Icons.notifications_outlined),
-                  title: const Text('Login'),
+                  leading: const Icon(Icons.logout),
+                  title: const Text('Logout'),
                   onTap: () {
+                    // Add your logout logic here
+                    // For example, clearing user session, navigating to login page, etc.
+                    
                     Navigator.pop(context);
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => const SignupPage()),);
-                  },
-                ),
-                ListTile(
-                  leading: const Icon(Icons.notifications_outlined),
-                  title: const Text('Gesture'),
-                  onTap: () {
-                    Navigator.pop(context);
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => const Gesture_screen()),);
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(builder: (context) => const SignupPage()),
+                    );
                   },
                 ),
               ],

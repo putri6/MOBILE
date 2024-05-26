@@ -1,17 +1,18 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
-// Generate a random border radius between 0 and 50
+
 double randomBorderRadius() {
   return Random().nextDouble() * 50;
 }
 
-// Generate a random margin between 0 and 20
+
 double randomMargin() {
   return Random().nextDouble() * 20;
 }
 
-// Generate a random color
+
 Color randomColor() {
   return Color.fromARGB(
     255,
@@ -22,7 +23,7 @@ Color randomColor() {
 }
 
 class Addstory extends StatefulWidget {
-  const Addstory({super.key});
+  const Addstory({Key? key}) : super(key: key);
 
   @override
   State<Addstory> createState() => _AddstoryState();
@@ -31,17 +32,19 @@ class Addstory extends StatefulWidget {
 class _AddstoryState extends State<Addstory> {
   late double borderRadius;
   late double margin;
-  late Color color;
+  late String imageUrl; // Store image URL
   double posX = 0;
   double posY = 0;
   final double boxSize = 100;
+  double scale = 1.0;
+  double opacity = 1.0;
+  bool isHovered = false;
 
   @override
   void initState() {
     super.initState();
     borderRadius = randomBorderRadius();
     margin = randomMargin();
-    color = randomColor();
   }
 
   @override
@@ -54,7 +57,14 @@ class _AddstoryState extends State<Addstory> {
     setState(() {
       borderRadius = randomBorderRadius();
       margin = randomMargin();
-      color = randomColor();
+      scale = 1.2; 
+      opacity = 0.7; 
+    });
+    Future.delayed(Duration(milliseconds: 200), () {
+      setState(() {
+        scale = 1.0; 
+        opacity = 1.0; 
+      });
     });
   }
 
@@ -69,44 +79,61 @@ class _AddstoryState extends State<Addstory> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: Stack(
-          children: [
-            Positioned(
-              left: posX,
-              top: posY,
-              child: GestureDetector(
-                onPanUpdate: (DragUpdateDetails details) {
-                  setState(() {
-                    posX += details.delta.dx;
-                    posY += details.delta.dy;
-                  });
-                },
-                onTap: changeState,
-                child: SizedBox(
-                  width: boxSize,
-                  height: boxSize,
-                  child: AnimatedContainer(
-                    duration: Duration(milliseconds: 2000),
-                    curve: Curves.bounceIn,
-                    margin: EdgeInsets.all(margin),
-                    decoration: BoxDecoration(
-                      color: color,
-                      borderRadius: BorderRadius.circular(borderRadius),
+      appBar: AppBar(title: const Text("Hover and Animations")),
+      backgroundColor: const Color(0xFF3B6D83),
+      body: Center(
+        child: SafeArea(
+          child: Stack(
+            children: [
+              Positioned(
+                left: posX,
+                top: posY,
+                child: GestureDetector(
+                  onPanUpdate: (DragUpdateDetails details) {
+                    setState(() {
+                      posX += details.delta.dx;
+                      posY += details.delta.dy;
+                    });
+                  },
+                  onTap: changeState,
+                  child: MouseRegion(
+                    onEnter: (_) => setState(() => isHovered = true),
+                    onExit: (_) => setState(() => isHovered = false),
+                    child: AnimatedOpacity(
+                      duration: Duration(milliseconds: 200),
+                      opacity: isHovered ? 0.7 : 1.0,
+                      child: AnimatedContainer(
+                        duration: Duration(milliseconds: 200),
+                        curve: Curves.easeInOut,
+                        margin: EdgeInsets.all(margin),
+                        transform: Matrix4.diagonal3Values(
+                          isHovered ? 1.2 : 1.0, 
+                          isHovered ? 1.2 : 1.0, 
+                          1.0
+                        ),
+                        decoration: BoxDecoration(
+                          color: randomColor(),
+                          borderRadius: BorderRadius.circular(borderRadius),
+                        ),
+                        width: boxSize,
+                        height: boxSize,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(borderRadius),
+                          child: Image.network(
+                            'https://awsimages.detik.net.id/community/media/visual/2022/05/03/kawasan-wisata-kawah-putih-1_169.jpeg?w=1200',
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      ),
                     ),
                   ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
   }
 }
 
-void main() {
-  runApp(MaterialApp(
-    home: Addstory(),
-  ));
-}

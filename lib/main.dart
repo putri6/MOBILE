@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:apps_gym/ui/favoritescreen.dart';
 import 'package:apps_gym/ui/notification.dart';
 import 'package:apps_gym/ui/work_screen.dart';
-import 'package:apps_gym/ui/login_page.dart';
 import 'package:apps_gym/ui/add_story.dart';
 import 'package:apps_gym/ui/gesture.dart';
+import 'package:apps_gym/ui/login.dart';
 
 void main() {
   runApp(const FloatingButtonDemo());
@@ -17,7 +17,7 @@ class FloatingButtonDemo extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: const HomeScreen(),
+      home: const LoginPage(),
     );
   }
 }
@@ -79,6 +79,20 @@ class HomeScreen extends StatelessWidget {
               icon: const Icon(Icons.favorite, color: Colors.red),
               iconSize: 30,
             ),
+            IconButton(
+              icon: Icon(Icons.share, color: Color.fromRGBO(109, 204, 225, 1)),
+              onPressed: () {
+                
+                // Implement share functionality here
+              }
+            ),
+            IconButton(
+              icon: Icon(Icons.bookmark, color: Color.fromRGBO(109, 204, 225, 1)),
+              onPressed: () {
+                
+                // Implement share functionality here
+              }
+            ),
           ],
         ),
       ),
@@ -86,21 +100,21 @@ class HomeScreen extends StatelessWidget {
         child: ListView(
           padding: EdgeInsets.zero,
           children: <Widget>[
-            DrawerHeader(
+            const DrawerHeader(
               decoration: BoxDecoration(
-                image: const DecorationImage(
+                image: DecorationImage(
                   image: AssetImage('assets/bg.jpg'), // Background image for UserAccountsDrawerHeader
                   fit: BoxFit.cover,
                 ),
               ),
               child: UserAccountsDrawerHeader(
-                accountName: const Text('Putri Priyanti'),
-                accountEmail: const Text('putri@gmail.com'),
-                currentAccountPicture: const CircleAvatar(
+                accountName: Text('Putri Priyanti'),
+                accountEmail: Text('putri@gmail.com'),
+                currentAccountPicture: CircleAvatar(
                   backgroundImage: AssetImage('assets/image.png'),
                 ),
                 decoration: BoxDecoration(
-                  color: const Color.fromARGB(0, 234, 228, 228), // Transparent background to see the image
+                  color: Color.fromARGB(0, 234, 228, 228), // Transparent background to see the image
                 ),
               ),
             ),
@@ -164,7 +178,7 @@ class HomeScreen extends StatelessWidget {
                     Navigator.pop(context);
                     Navigator.pushReplacement(
                       context,
-                      MaterialPageRoute(builder: (context) => const SignupPage()),
+                      MaterialPageRoute(builder: (context) => const LoginPage()),
                     );
                   },
                 ),
@@ -180,12 +194,8 @@ class HomeScreen extends StatelessWidget {
             MaterialPageRoute(builder: (context) => Addstory()),
           );
         },
-        child: Center(
-          child: Image.asset(
-            'assets/bg.jpg',
-            width: 200,
-            height: 200,
-          ),
+         child: Center(
+          child: buildImageContainer(getImageUrl(0)),
         ),
       ),
 
@@ -228,6 +238,7 @@ class _ElevatedButtonExampleState extends State<ElevatedButtonExample> {
   Widget build(BuildContext context) {
     final ButtonStyle style =
         ElevatedButton.styleFrom(textStyle: const TextStyle(fontSize: 20));
+      
 
     return Center(
       child: Column(
@@ -247,3 +258,24 @@ class _ElevatedButtonExampleState extends State<ElevatedButtonExample> {
     );
   }
 }
+
+Widget buildImageContainer(String imageUrl) {
+    return Container(
+      width: 150,
+      height: 150,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10),
+        image: DecorationImage(
+          image: NetworkImage(imageUrl),
+          fit: BoxFit.cover,
+        ),
+      ),
+    );
+  }
+  String getImageUrl(int index) {
+    List<String> urls = [
+      'https://awsimages.detik.net.id/community/media/visual/2022/05/03/kawasan-wisata-kawah-putih-1_169.jpeg?w=1200',
+      
+    ];
+    return urls[index];
+  }
